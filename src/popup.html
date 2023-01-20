@@ -3,41 +3,32 @@
 
 <head>
     <title>My Extension</title>
-    <style>
-        form {
-            width: 300px;
-            height: 400px;
-        }
-
-        label {
-            font-size: 1.2em;
-            /* increase the font size of the label */
-            font-weight: bold;
-            /* make the label text bold */
-            margin-bottom: 10px;
-            /* add some margin to the bottom of the label */
-        }
-    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <script src="popup.js"></script>
-    <form>
-        <label for="categorySelect">Chose an IOC category:</label>
+    <div class="container">
         <br>
-        <select id="categorySelect" class="form-control">
-            <option value="none" selected>Select a category</option>
-            <option value="category1">URL, domain</option>
-            <option value="category2">IP adress</option>
-            <option value="category3">Email headers</option>
-        </select>
-        <br><br>
-        <div id="formContainer"></div>
-        <br><br>
-        <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
-    </form>
-    
+        <h5 style="text-align: center;">SOC ANALYSIS TOOLS</h5>
+        <form>
+            <div class="form-group">
+                <br>
+                <label for="categorySelect">Chose an IOC category:</label>
+                <br>
+                <select id="categorySelect" class="form-control">
+                    <option value="none" selected>Select a category</option>
+                    <option value="url">URL, domain</option>
+                    <option value="ipAdress">IP adress</option>
+                    <option value="headers">Email headers</option>
+                </select>
+            </div>
+            <div id="formContainer"></div>
+            <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
 </body>
 
 </html>
