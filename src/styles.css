@@ -1,0 +1,7 @@
+form {
+    width: 50%; /* increase the width of the form to 50% of the container */
+    margin: 0 auto; /* center the form horizontally */
+}
+input[type="text"], select {
+    width: 100%; /* make the input and select elements take up the full width of their parent */
+}

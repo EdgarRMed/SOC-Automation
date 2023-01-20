@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "My Extension",
+    "description": "This is an example extension",
+    "version": "1.0",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "scripting",
+        "https://www.virustotal.com/*"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "popup.js"
+            ]
+        }
+    ]
+}
