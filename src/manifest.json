@@ -9,8 +9,12 @@
     "permissions": [
         "activeTab",
         "tabs",
-        "scripting",
-        "https://www.virustotal.com/*"
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.virustotal.com/*",
+        "https://www.example.com/*",
+        "https://www.example.com"
     ],
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"

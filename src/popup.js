@@ -36,14 +36,14 @@ window.onload = function () {
                 '<input type="checkbox" id="virusTotalCheckbox"> VirusTotal (Interaction required)' +
                 '<br>' +
                 '<input type="checkbox" id="AbuseIPDBCheckbox"> AbuseIPDB';
-                selectAllCheckboxes("selectAll", ["talosCheckbox", "xForceheckbox", "virusTotalCheckbox", "AbuseIPDBCheckbox"]);
+            selectAllCheckboxes("selectAll", ["talosCheckbox", "xForceheckbox", "virusTotalCheckbox", "AbuseIPDBCheckbox"]);
         } else if (category === "headers") {
             formContainer.innerHTML = '<input type="checkbox" id="selectAll"> Select All' +
                 '<br>' +
                 '<input type="checkbox" id="msHeaderAnalyzer"> Microsof Header analyzer (Interaction required)' +
                 '<br>' +
                 '<input type="checkbox" id="mxToolboxCheckBox"> MX toolbox (Interaction required)';
-                selectAllCheckboxes("selectAll", ["msHeaderAnalyzer", "mxToolboxCheckBox"]);
+            selectAllCheckboxes("selectAll", ["msHeaderAnalyzer", "mxToolboxCheckBox"]);
         } else if (category === "none") {
             // don't render any form
         }
@@ -94,9 +94,27 @@ window.onload = function () {
         if (xForceheckbox && xForceheckbox.checked) {
             chrome.tabs.create({ url: "https://exchange.xforce.ibmcloud.com/url/" + inputValue });
         }
-        if (virusTotalCheckbox && virusTotalCheckbox.checked) {
-            chrome.tabs.create({ url: "https://www.virustotal.com/gui/home/url" });
-        }
+        (async () => {
+            if (virusTotalCheckbox && virusTotalCheckbox.checked) {
+
+                await chrome.tabs.create({ url: "https://www.virustotal.com/gui/home/url" }, async function (tab) {
+                    chrome.tabs.onUpdated.addListener(async function listener(tabId, changeInfo, tab) {
+                        if (tabId === tab.id && changeInfo.status === "complete") {
+                            chrome.tabs.onUpdated.removeListener(listener);
+                            await chrome.scripting.executeScript({
+                                target: { tabId: tab.id, allFrames: true },
+                                function: function () {
+                                    console.log('Script Running:', 'inputValue', inputValue); 
+                                    var inputElement = document.getElementById('urlSearchInput'); 
+                                    if (inputElement) { inputElement.value = inputValue; } else { console.log('Element not found') };
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        })();
+
         if (netcraftCheckbox && netcraftCheckbox.checked) {
             chrome.tabs.create({ url: "https://toolbar.netcraft.com/site_report?url=" + inputValue });
         }
