@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "My Extension",
+    "name": "SOC Tools",
     "description": "This is an example extension",
     "version": "1.0",
     "action": {
@@ -9,12 +9,8 @@
     "permissions": [
         "activeTab",
         "tabs",
-        "scripting"
-    ],
-    "host_permissions": [
-        "https://www.virustotal.com/*",
-        "https://www.example.com/*",
-        "https://www.example.com"
+        "scripting",
+        "https://www.virustotal.com/*"
     ],
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"

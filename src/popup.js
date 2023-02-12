@@ -1,5 +1,9 @@
 window.onload = function () {
-    document.getElementById("categorySelect").selectedIndex = 0;
+    try {
+        document.getElementById("categorySelect").selectedIndex = 0;
+    } catch (error) {
+        console.error(error);
+    }
     document.getElementById("categorySelect").addEventListener("change", function () {
         var category = this.value;
         var formContainer = document.getElementById("formContainer");
@@ -15,15 +19,18 @@ window.onload = function () {
                 '<br>' +
                 '<input type="checkbox" id="xForceheckbox"> IBM X-Force Exchange' +
                 '<br>' +
-                '<input type="checkbox" id="virusTotalCheckbox"> VirusTotal (Interaction required)' +
+                '<input type="checkbox" id="whoisCheckbox"> Whois' +
                 '<br>' +
                 '<input type="checkbox" id="netcraftCheckbox"> NETCRAFT' +
                 '<br>' +
+                '<input type="checkbox" id="virusTotalCheckbox"> VirusTotal (Interaction required)' +
+                '<br>' +
                 '<input type="checkbox" id="dnsDumpsterCheckbox"> DNSDumpster (Interaction required)' +
                 '<br>' +
-                '<input type="checkbox" id="whoisCheckbox"> Whois';
+                '<input type="checkbox" id="URLscanBox"> URL scan (Interaction required)';
 
-            selectAllCheckboxes("selectAll", ["talosCheckbox", "mxLookupCheckbox", "xForceheckbox", "virusTotalCheckbox", "netcraftCheckbox", "dnsDumpsterCheckbox", "whoisCheckbox"]);
+            selectAllCheckboxes("selectAll", ["talosCheckbox", "mxLookupCheckbox", "xForceheckbox", "virusTotalCheckbox", "netcraftCheckbox", "dnsDumpsterCheckbox", "whoisCheckbox",
+                "URLscanBox"]);
         } else if (category === "ipAdress") {
             formContainer.innerHTML = '<input type="text" id="inputValue2" placeholder="Enter a value">' +
                 '<br><br>' +
@@ -33,10 +40,13 @@ window.onload = function () {
                 '<br>' +
                 '<input type="checkbox" id="xForceheckbox"> IBM X-Force Exchange' +
                 '<br>' +
+                '<input type="checkbox" id="geolocationCheckbox"> IP Geolocation' +
+                '<br>' +
                 '<input type="checkbox" id="virusTotalCheckbox"> VirusTotal (Interaction required)' +
                 '<br>' +
                 '<input type="checkbox" id="AbuseIPDBCheckbox"> AbuseIPDB';
-            selectAllCheckboxes("selectAll", ["talosCheckbox", "xForceheckbox", "virusTotalCheckbox", "AbuseIPDBCheckbox"]);
+            selectAllCheckboxes("selectAll", ["talosCheckbox", "xForceheckbox", "virusTotalCheckbox", "AbuseIPDBCheckbox"
+                , "geolocationCheckbox"]);
         } else if (category === "headers") {
             formContainer.innerHTML = '<input type="checkbox" id="selectAll"> Select All' +
                 '<br>' +
@@ -64,6 +74,8 @@ window.onload = function () {
         var abuseIPDBCheckbox;
         var msHeaderAnalyzer;
         var mxToolboxCheckBox;
+        var URLscanBox;
+        var geolocationCheckbox;
         if (category === 'url') {
             inputValue = document.getElementById("inputValue").value;
             talosCheckbox = document.getElementById("talosCheckbox");
@@ -73,10 +85,12 @@ window.onload = function () {
             netcraftCheckbox = document.getElementById("netcraftCheckbox");
             dnsDumpsterCheckbox = document.getElementById("dnsDumpsterCheckbox");
             whoisCheckbox = document.getElementById("whoisCheckbox");
+            URLscanBox = document.getElementById("URLscanBox");
         } else if (category === 'ipAdress') {
             inputValue = document.getElementById("inputValue2").value;
             talosCheckbox = document.getElementById("talosCheckbox");
             xForceheckbox = document.getElementById("xForceheckbox");
+            geolocationCheckbox = document.getElementById("geolocationCheckbox");
             virusTotalCheckbox = document.getElementById("virusTotalCheckbox");
             abuseIPDBCheckbox = document.getElementById("AbuseIPDBCheckbox");
         } else if (category === 'headers') {
@@ -84,54 +98,62 @@ window.onload = function () {
             mxToolboxCheckBox = document.getElementById("mxToolboxCheckBox");
         }
 
-
+        // Store all the links that will be open
+        var urlsToOpen = [];
         if (talosCheckbox && talosCheckbox.checked) {
-            chrome.tabs.create({ url: "https://www.talosintelligence.com/reputation_center/lookup?search=" + inputValue });
+            urlsToOpen.push("https://www.talosintelligence.com/reputation_center/lookup?search=" + inputValue);
         }
         if (mxLookupCheckbox && mxLookupCheckbox.checked) {
-            chrome.tabs.create({ url: "https://mxtoolbox.com/SuperTool.aspx?action=a%3a" + inputValue + "&run=toolpage" });
+            urlsToOpen.push("https://mxtoolbox.com/SuperTool.aspx?action=a%3a" + inputValue + "&run=toolpage");
         }
         if (xForceheckbox && xForceheckbox.checked) {
-            chrome.tabs.create({ url: "https://exchange.xforce.ibmcloud.com/url/" + inputValue });
+            urlsToOpen.push("https://exchange.xforce.ibmcloud.com/url/" + inputValue);
         }
-        (async () => {
-            if (virusTotalCheckbox && virusTotalCheckbox.checked) {
+        if (virusTotalCheckbox && virusTotalCheckbox.checked) {
+            urlsToOpen.push("https://www.virustotal.com/gui/home/url");
+        }
+        if (netcraftCheckbox && netcraftCheckbox.checked) {
+            urlsToOpen.push("https://toolbar.netcraft.com/site_report?url=" + inputValue);
+        }
+        if (dnsDumpsterCheckbox && dnsDumpsterCheckbox.checked) {
+            urlsToOpen.push("https://dnsdumpster.com/");
+        }
+        if (whoisCheckbox && whoisCheckbox.checked) {
+            urlsToOpen.push("https://who.is/whois/" + inputValue);
+        }
+        if (abuseIPDBCheckbox && abuseIPDBCheckbox.checked) {
+            urlsToOpen.push("https://www.abuseipdb.com/check/" + inputValue);
+        }
+        if (msHeaderAnalyzer && msHeaderAnalyzer.checked) {
+            urlsToOpen.push("https://mha.azurewebsites.net/");
+        }
+        if (mxToolboxCheckBox && mxToolboxCheckBox.checked) {
+            urlsToOpen.push("https://mxtoolbox.com/EmailHeaders.aspx");
+        }
+        if (URLscanBox && URLscanBox.checked) {
+            urlsToOpen.push("https://urlscan.io/");
+        }
+        if (geolocationCheckbox && geolocationCheckbox.checked) {
+            urlsToOpen.push("https://db-ip.com/" + inputValue);
+        }
 
-                await chrome.tabs.create({ url: "https://www.virustotal.com/gui/home/url" }, async function (tab) {
-                    chrome.tabs.onUpdated.addListener(async function listener(tabId, changeInfo, tab) {
-                        if (tabId === tab.id && changeInfo.status === "complete") {
-                            chrome.tabs.onUpdated.removeListener(listener);
-                            await chrome.scripting.executeScript({
-                                target: { tabId: tab.id, allFrames: true },
-                                function: function () {
-                                    console.log('Script Running:', 'inputValue', inputValue); 
-                                    var inputElement = document.getElementById('urlSearchInput'); 
-                                    if (inputElement) { inputElement.value = inputValue; } else { console.log('Element not found') };
-                                }
+        if (urlsToOpen.length > 0) {
+            chrome.windows.create({
+                url: urlsToOpen,
+                focused: true
+            }, function (newWindow) {
+                chrome.tabs.query({
+                    windowId: newWindow.id
+                }, function (tabs) {
+                    tabs.forEach(function (tab) {
+                        if (tab.url === urlsToOpen[0]) {
+                            chrome.scripting.executeScript(tab.id, {
+                                code: "console.log('Hello from the first new tab!')"
                             });
                         }
                     });
                 });
-            }
-        })();
-
-        if (netcraftCheckbox && netcraftCheckbox.checked) {
-            chrome.tabs.create({ url: "https://toolbar.netcraft.com/site_report?url=" + inputValue });
-        }
-        if (dnsDumpsterCheckbox && dnsDumpsterCheckbox.checked) {
-            chrome.tabs.create({ url: "https://dnsdumpster.com/" });
-        }
-        if (whoisCheckbox && whoisCheckbox.checked) {
-            chrome.tabs.create({ url: "https://who.is/whois/" + inputValue });
-        }
-        if (abuseIPDBCheckbox && abuseIPDBCheckbox.checked) {
-            chrome.tabs.create({ url: "https://www.abuseipdb.com/check/" + inputValue });
-        }
-        if (msHeaderAnalyzer && msHeaderAnalyzer.checked) {
-            chrome.tabs.create({ url: "https://mha.azurewebsites.net/" });
-        }
-        if (mxToolboxCheckBox && mxToolboxCheckBox.checked) {
-            chrome.tabs.create({ url: "https://mxtoolbox.com/EmailHeaders.aspx" });
+            });
         }
     });
 };
