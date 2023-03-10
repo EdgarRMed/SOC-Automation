@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "SOC Tools",
-    "description": "This is an example extension",
+    "description": "Extenison for IOC analysis",
     "version": "1.0",
     "action": {
         "default_popup": "popup.html"
@@ -9,8 +9,7 @@
     "permissions": [
         "activeTab",
         "tabs",
-        "scripting",
-        "https://www.virustotal.com/*"
+        "scripting"
     ],
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"

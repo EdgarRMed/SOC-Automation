@@ -1,0 +1,126 @@
+{   
+    "tools":[
+        {
+            "name": "Cisco Tallos Intelligence",
+            "url": "https://www.talosintelligence.com/reputation_center/lookup?search=IOC",
+            "interaction": false
+        },
+        {
+            "name": "MX Lookup Tool",
+            "url": "https://mxtoolbox.com/SuperTool.aspx?action=a%3aIOC&run=toolpage",
+            "interaction": false
+        },
+        {
+            "name": "IBM X-Force Exchange",
+            "url": "https://exchange.xforce.ibmcloud.com/url/IOC",
+            "interaction": false
+        },
+        {
+            "name": "Whois",
+            "url": "https://who.is/whois/IOC",
+            "interaction": false
+        },
+        {
+            "name": "NETCRAFT",
+            "url": "https://toolbar.netcraft.com/site_report?url=IOC",
+            "interaction": false
+        },
+        {
+            "name": "VirusTotal",
+            "url": "https://www.virustotal.com/gui/home/url",
+            "interaction": true
+        },
+        {
+            "name": "DNSDumpster",
+            "url": "https://dnsdumpster.com/",
+            "interaction": true
+        },
+        {
+            "name": "URL scan",
+            "url": "https://urlscan.io/",
+            "interaction": true
+        },
+        {
+            "name": "IP geolocation",
+            "url": "https://db-ip.com/IOC",
+            "interaction": false
+        },
+        {
+            "name": "AbuseIPDB",
+            "url": "https://www.abuseipdb.com/check/IOC",
+            "interaction": false
+        },
+        {
+            "name": "mxToolboxCheckBox",
+            "url": "https://mxtoolbox.com/EmailHeaders.aspx",
+            "interaction": true
+        },
+        {
+            "name": "msHeaderAnalyzer",
+            "url": "https://mha.azurewebsites.net/",
+            "interaction": true
+        },
+        {
+            "name": "Hybrid analysis",
+            "url": "https://www.hybrid-analysis.com/",
+            "interaction": true
+        },
+        {
+            "name": "Cuco sandbox",
+            "url": "https://cuckoo.cert.ee/",
+            "interaction": true
+        },
+        {
+            "name": "Joe sandbox",
+            "url": "https://www.joesandbox.com/#windows",
+            "interaction": true
+        },
+        {
+            "name": "Google search",
+            "url": "https://www.google.com/search?q=IOC",
+            "interaction": false
+        },
+        {
+            "name": "Info by IP",
+            "url": "https://es.infobyip.com/ipbulklookup.php",
+            "interaction": true
+        }
+        
+
+    ],
+    "categories": {
+        "URL":[
+            "Cisco Tallos Intelligence",
+            "MX Lookup Tool",
+            "IBM X-Force Exchange",
+            "Whois",
+            "NETCRAFT",
+            "VirusTotal",
+            "DNSDumpster",
+            "URL scan"
+        ],
+        "IpAdress":[
+            "Cisco Tallos Intelligence",
+            "IBM X-Force Exchange",
+            "IP geolocation",
+            "VirusTotal",
+            "AbuseIPDB",
+            "DNSDumpster",
+            "Info by IP"
+        ],
+        "Email Headers":[
+            "msHeaderAnalyzer",
+            "mxToolboxCheckBox"
+        ],
+        "Files": [
+            "Hybrid analysis",
+            "Cuco sandbox",
+            "VirusTotal",
+            "Joe sandbox"
+        ],
+        "Hash": [
+            "VirusTotal",
+            "Google search"
+        ]
+    }
+}
